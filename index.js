@@ -14,22 +14,17 @@ http
       });
       req.on('end', function () {
         console.log("Body: " + body);
-        console.log('Define each color from RGB Strip light.');
-        var ledRed = new Gpio(23, {mode: Gpio.OUTPUT});
-        var ledGreen = new Gpio(24, {mode: Gpio.OUTPUT});
-        var ledBlue = new Gpio(25, {mode: Gpio.OUTPUT});
-        console.log('Power up the red color.');
-        //You can set a brightness value between 0 and 255
-        //where 0 is off and 255 is maximum brightness
-        ledRed.pwmWrite(255);
-        console.log("Let's start other colors too");
-        //Stop the lights after 5 seconds
-        setTimeout(function(){
-          console.log('Stop all colors after 5 seconds');
-          ledRed.pwmWrite(0);
-          ledGreen.pwmWrite(0);
-          ledBlue.pwmWrite(0);
-        }, 5000);
+        const settings = JSON.parse(body);
+        const brightness = 1 | settings.brightness;
+        const red =  settings.red | 0;
+        const green =  settings.green | 0;
+        const blue =  settings.blue | 0;
+        const ledRed = new Gpio(23, {mode: Gpio.OUTPUT});
+        const ledGreen = new Gpio(24, {mode: Gpio.OUTPUT});
+        const ledBlue = new Gpio(25, {mode: Gpio.OUTPUT});
+        ledRed.pwmWrite(red*brightness);
+        ledGreen.pwmWrite(green*brightness);
+        ledBlue.pwmWrite(blue*brightness);
       });
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('post received');
