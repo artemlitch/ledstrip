@@ -43,16 +43,20 @@ http
       });
       req.on('end', function () {
         console.log("Body, ", body);
-        const settings = JSON.parse(body);
-        const brightness = settings.brightness || 1;
-        const red =  settings.red || 0;
-        const green =  settings.green || 0;
-        const blue =  settings.blue || 0;
-        console.log(settings.brightness, brightness);
-        console.log("settings colors to ", red*brightness, green*brightness, blue*brightness)
-        LED_RED.pwmWrite(parseInt(red*brightness));
-        LED_GREEN.pwmWrite(parseInt(green*brightness));
-        LED_BLUE.pwmWrite(parseInt(blue*brightness));
+        try {
+            const settings = JSON.parse(body);
+            const brightness = settings.brightness || 1;
+            const red =  settings.red || 0;
+            const green =  settings.green || 0;
+            const blue =  settings.blue || 0;
+            console.log(settings.brightness, brightness);
+            console.log("settings colors to ", red*brightness, green*brightness, blue*brightness)
+            LED_RED.pwmWrite(parseInt(red*brightness));
+            LED_GREEN.pwmWrite(parseInt(green*brightness));
+            LED_BLUE.pwmWrite(parseInt(blue*brightness));
+        } catch (err) {
+            console.log(err);
+        }
       });
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('post received');
@@ -67,19 +71,19 @@ http
         if (error) {
           if(error.code == 'ENOENT'){
             fs.readFile('./404.html', function(error, content) {
-              response.writeHead(200, { 'Content-Type': contentType });
-              response.end(content, 'utf-8');
+              res.writeHead(200, { 'Content-Type': contentType });
+              res.end(content, 'utf-8');
             });
           }
           else {
-            response.writeHead(500);
-            response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
-            response.end();
+            res.writeHead(500);
+            res.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
+            res.end();
           }
         }
         else {
-          response.writeHead(200, { 'Content-Type': contentType });
-          response.end(content, 'utf-8');
+          res.writeHead(200, { 'Content-Type': contentType });
+          res.end(content, 'utf-8');
         }
       });
     }
