@@ -1,5 +1,7 @@
 function init() {
-  const demoColorPicker = new iro.ColorPicker("#color-picker-container");
+  const demoColorPicker = new iro.ColorPicker("#color-picker-container", {
+    'wheelLightness': false
+  });
   demoColorPicker.on('input:end', (color) => {
     const {r, g, b} = color.rgb;
     const data = {
