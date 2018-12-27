@@ -13,9 +13,9 @@ http
         console.log("Partial body: " + body);
       });
       req.on('end', function () {
-        console.log("Body: " + body);
+        console.log("Body, ", body);
         const settings = JSON.parse(body);
-        const brightness = 1 | settings.brightness;
+        const brightness = 0.5 | 1;
         const red =  settings.red | 0;
         const green =  settings.green | 0;
         const blue =  settings.blue | 0;
