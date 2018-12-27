@@ -15,16 +15,18 @@ http
       req.on('end', function () {
         console.log("Body, ", body);
         const settings = JSON.parse(body);
-        const brightness = 0.5 | 1;
-        const red =  settings.red | 0;
-        const green =  settings.green | 0;
-        const blue =  settings.blue | 0;
+        const brightness = settings.brightness || 1;
+        const red =  settings.red || 0;
+        const green =  settings.green || 0;
+        const blue =  settings.blue || 0;
+        console.log(settings.brightness, brightness);
+        console.log("settings colors to ", red*brightness, green*brightness, blue*brightness)
         const ledRed = new Gpio(23, {mode: Gpio.OUTPUT});
         const ledGreen = new Gpio(24, {mode: Gpio.OUTPUT});
         const ledBlue = new Gpio(25, {mode: Gpio.OUTPUT});
-        ledRed.pwmWrite(red*brightness);
-        ledGreen.pwmWrite(green*brightness);
-        ledBlue.pwmWrite(blue*brightness);
+        ledRed.pwmWrite(parseInt(red*brightness));
+        ledGreen.pwmWrite(parseInt(green*brightness));
+        ledBlue.pwmWrite(parseInt(blue*brightness));
       });
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('post received');
