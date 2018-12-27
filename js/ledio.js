@@ -10,6 +10,52 @@ const setColor = (red, green, blue, brightness=1) => {
   LED_BLUE.pwmWrite(parseInt(blue*brightness));
 };
 
+const init = () => {
+  LED_RED.pwmWrite(parseInt(100));
+  LED_GREEN.pwmWrite(parseInt(100));
+  LED_BLUE.pwmWrite(parseInt(100));
+  setTimeout(
+    () => {
+      LED_RED.pwmWrite(parseInt(0));
+      LED_GREEN.pwmWrite(parseInt(0));
+      LED_BLUE.pwmWrite(parseInt(0));
+      setTimeout(
+        () => {
+          LED_RED.pwmWrite(parseInt(100));
+          LED_GREEN.pwmWrite(parseInt(0));
+          LED_BLUE.pwmWrite(parseInt(0));
+          setTimeout(
+            () => {
+              LED_RED.pwmWrite(parseInt(0));
+              LED_GREEN.pwmWrite(parseInt(100));
+              LED_BLUE.pwmWrite(parseInt(0));
+              setTimeout(
+                () => {
+                  LED_RED.pwmWrite(parseInt(0));
+                  LED_GREEN.pwmWrite(parseInt(0));
+                  LED_BLUE.pwmWrite(parseInt(100));
+                  setTimeout(
+                    () => {
+                      LED_RED.pwmWrite(parseInt(0));
+                      LED_GREEN.pwmWrite(parseInt(0));
+                      LED_BLUE.pwmWrite(parseInt(0));
+                    },
+                    500
+                  );
+                },
+                500
+              );
+            },
+            500
+          );
+        },
+        500
+      );
+    },
+    500
+  );
+}
 module.exports = {
-  setColor: setColor
+  setColor: setColor,
+  init: init,
 }

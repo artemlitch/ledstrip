@@ -29,6 +29,8 @@ function getExtension(filePath) { const extname = path.extname(filePath);
   return contentType;
 }
 
+ledControl.init();
+
 http
   .createServer((req, res) => {
     // Set CORS headers
