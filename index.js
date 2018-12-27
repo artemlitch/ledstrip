@@ -1,8 +1,8 @@
-const Gpio = require('pigpio').Gpio;
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const PORT = process.env.PORT || 1337;
+const ledControl = require('./js/ledio');
 
 function getExtension(filePath) { const extname = path.extname(filePath);
   let contentType = 'text/html';
@@ -29,12 +29,18 @@ function getExtension(filePath) { const extname = path.extname(filePath);
   return contentType;
 }
 
-const LED_RED = new Gpio(23, {mode: Gpio.OUTPUT});
-const LED_GREEN = new Gpio(24, {mode: Gpio.OUTPUT});
-const LED_BLUE = new Gpio(25, {mode: Gpio.OUTPUT});
-
 http
   .createServer((req, res) => {
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Request-Method', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    if ( req.method === 'OPTIONS' ) {
+      res.writeHead(200);
+      res.end();
+      return;
+    }
     if (req.method === 'POST') {
       console.log("POST");
       var body = '';
@@ -49,17 +55,16 @@ http
             const red =  settings.red || 0;
             const green =  settings.green || 0;
             const blue =  settings.blue || 0;
-            console.log(settings.brightness, brightness);
-            console.log("settings colors to ", red*brightness, green*brightness, blue*brightness)
-            LED_RED.pwmWrite(parseInt(red*brightness));
-            LED_GREEN.pwmWrite(parseInt(green*brightness));
-            LED_BLUE.pwmWrite(parseInt(blue*brightness));
+            ledControl.setColor(red, green, blue, brightness);
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          res.end('post received');
         } catch (err) {
             console.log(err);
+            res.writeHead(500);
+            res.end(err.message);
+            res.end();
         }
       });
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.end('post received');
     } else {
       var filePath = '.' + req.url;
       if (filePath == './')
