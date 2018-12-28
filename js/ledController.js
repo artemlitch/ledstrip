@@ -8,15 +8,27 @@ if (process.env.demo) {
 class Controller {
   constructor() {
     console.log("Initialized the LED controller");
-    this.red = new Gpio(23, {mode: Gpio.OUTPUT});
-    this.green = new Gpio(24, {mode: Gpio.OUTPUT});
-    this.blue = new Gpio(25, {mode: Gpio.OUTPUT});
+    this.red = {
+      io: new Gpio(23, {mode: Gpio.OUTPUT}),
+      value: 0,
+    }
+    this.green = {
+      io: new Gpio(24, {mode: Gpio.OUTPUT}),
+      value: 0,
+    }
+    this.blue = {
+      io: new Gpio(25, {mode: Gpio.OUTPUT}),
+      value: 0,
+    }
   }
 
   setColors(red, green, blue) {
-    this.red.pwmWrite(parseInt(red));
-    this.green.pwmWrite(parseInt(green));
-    this.blue.pwmWrite(parseInt(blue));
+    this.red.io.pwmWrite(parseInt(red));
+    this.green.io.pwmWrite(parseInt(green));
+    this.blue.io.pwmWrite(parseInt(blue));
+    this.red.value = parseInt(red);
+    this.green.value = parseInt(green);
+    this.blue.value = parseInt(blue);
   }
 
   getValues() {
