@@ -17,12 +17,19 @@ function postSpotify(body, res) {
 }
 
 function handlePost(body, req, res) {
-  switch (req.url) {
-    case "/spotify":
+  try {
+    switch (req.url) {
+      case "/spotify":
 
-    default:
-      postDefault(body, res);
-      break;
+      default:
+        postDefault(body, res);
+        break;
+    }
+  }catch (err) {
+    console.log(err);
+    res.writeHead(500);
+    res.end(err.message);
+    res.end();
   }
 }
 

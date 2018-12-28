@@ -36,12 +36,19 @@ function getDefault(req, res) {
 }
 
 function handleGet(req, res) {
-  switch (req.url) {
-    case "/currentLightVal":
-      getCurrentLightVal(req, res);
-      break;
-    default:
-      getDefault(req, res);
+  try {
+    switch (req.url) {
+      case "/currentLightVal":
+        getCurrentLightVal(req, res);
+        break;
+      default:
+        getDefault(req, res);
+    }
+  } catch {
+    console.log(err);
+    res.writeHead(500);
+    res.end(err.message);
+    res.end();
   }
 }
 
