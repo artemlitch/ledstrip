@@ -33,7 +33,7 @@ function init() {
 
     });
     demoColorPicker.color.rgb = {r: data.red, g: data.green, b: data.blue};
-    demoColorPicker.on('color:change', throttle(sendChangeColor, 300))
+    demoColorPicker.on('color:change', throttle(sendChangeColor, 50))
   })
 };
 
