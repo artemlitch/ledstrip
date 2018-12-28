@@ -9,6 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pigpio": "^1.2.1"
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "pigpio": "^1.2.1",
+    "spotify-web-api-node": "^4.0.0"
   }
 }
