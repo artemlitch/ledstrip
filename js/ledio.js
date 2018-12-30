@@ -13,41 +13,61 @@ const setColor = (red, green, blue, brightness=1) => {
   );
 };
 
-const init = () => {
-  LedController.setColors(100,100,100);
-  setTimeout(
-    () => {
-      LedController.setColors(0,0,0);
-      setTimeout(
-        () => {
-          LedController.setColors(100,0,0);
-          setTimeout(
-            () => {
-              LedController.setColors(0,100,0);
-              setTimeout(
-                () => {
-                  LedController.setColors(0,0,100);
-                  setTimeout(
-                    () => {
-                      LedController.setColors(0,0,0);
-                    },
-                    500
-                  );
-                },
-                500
-              );
-            },
-            500
-          );
-        },
-        500
-      );
-    },
-    500
-  );
+const flashColors = async (mainColors) => {
+  const {oldRed, oldGreen, oldBlue } = getValues();
+  const { red, green, blue } = mainColors;
+  LedController.setColors(red,green,blue);
+  await timeout(100);
+  LedController.setColors(red*0.1,green*0.1,blue*0.1);
+  await timeout(100);
+  LedController.setColors(red,green,blue);
+  await timeout(100);
+  LedController.setColors(red*0.1,green*0.1,blue*0.1);
+  await timeout(100);
+  LedController.setColors(red,green,blue);
+  await timeout(100);
+  LedController.setColors(red*0.1,green*0.1,blue*0.1);
+  await timeout(100);
+  LedController.setColors(red,green,blue);
+  await timeout(100);
+  LedController.setColors(red*0.1,green*0.1,blue*0.1);
+  await timeout(100);
+  LedController.setColors(red,green,blue);
+  await timeout(100);
+  LedController.setColors(red*0.1,green*0.1,blue*0.1);
+  await timeout(100);
+  LedController.setColors(red,green,blue);
+  await timeout(100);
+  LedController.setColors(red*0.1,green*0.1,blue*0.1);
+  await timeout(100);
+  LedController.setColors(red,green,blue);
+  await timeout(100);
+  LedController.setColors(red*0.1,green*0.1,blue*0.1);
+  await timeout(100);
+  LedController.setColors(oldRed,oldGreen,oldBlue);
 }
+
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const init = async () => {
+  LedController.setColors(100,100,100);
+  await timeout(500);
+  LedController.setColors(0,0,0);
+  await timeout(500);
+  LedController.setColors(100,0,0);
+  await timeout(500);
+  LedController.setColors(0,100,0);
+  await timeout(500);
+  LedController.setColors(0,0,100);
+  await timeout(500);
+  LedController.setColors(0,0,0);
+}
+
 module.exports = {
   setColor: setColor,
   getValues: getValues,
+  flashColors: flashColors,
   init: init,
 }

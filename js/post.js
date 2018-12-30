@@ -16,11 +16,22 @@ function postSpotify(body, res) {
   res.end('post received');
 }
 
+function postNFL(body, res) {
+  ledControl.flashColors({
+    red: 63,
+    green: 54,
+    blue: 168
+  })
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end('nfl post received');
+}
+
 function handlePost(body, req, res) {
   try {
     switch (req.url) {
-      case "/spotify":
-
+      case "/nfl":
+        postNFL(body, res);
+        break;
       default:
         postDefault(body, res);
         break;
