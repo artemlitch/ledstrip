@@ -1,4 +1,5 @@
 const ledControl = require('./ledio');
+const nflControl = require('./nflController');
 
 function postDefault(body, res) {
   const settings = JSON.parse(body);
@@ -17,13 +18,9 @@ function postSpotify(body, res) {
 }
 
 function postNFL(body, res) {
-  ledControl.flashColors({
-    red: 63,
-    green: 54,
-    blue: 168
-  })
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end('nfl post received');
+  const status = nflControl.toggle();
+  res.writeHead(200, {'Content-Type': 'application/json'});
+  res.end(JSON.stringify({nflPoll: status}));
 }
 
 function handlePost(body, req, res) {
