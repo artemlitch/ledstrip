@@ -60,8 +60,6 @@ const checkNFL = () => {
     }
     if (score > OLD_SCORE) {
       ledControl.flashColors(TEAM_COLORS[TEAM])
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.end('nfl post received');
     }
     OLD_SCORE = score;
   });
