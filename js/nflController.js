@@ -1,15 +1,23 @@
 const ledControl = require('./ledio');
 const request = require('request');
 
-let checking = false;
+let CHECKING = false;
 
-let handler = undefined;
-let oldScore = undefined;
+let HANDLER = undefined;
+let OLD_SCORE = undefined;
 
-let team = 'CLE';
+let TEAM = 'CLE';
+
+const TEAM_COLORS = {
+  'CLE': {
+    red: 255,
+    green: 47,
+    blue: 0
+  }
+}
 
 function startPolling() {
-  handler = setInterval(() => {
+  HANDLER = setInterval(() => {
     try{
       checkNFL();
     } catch (err) {
@@ -19,18 +27,19 @@ function startPolling() {
 }
 
 function stopPolling() {
-  oldScore = undefined;
-  clearInterval(handler);
+  OLD_SCORE = undefined;
+  clearInterval(HANDLER);
 }
 
 function toggle() {
-  checking = !checking;
-  if (checking ) {
+  CHECKING = !CHECKING;
+  if (CHECKING ) {
     startPolling();
-    return checking;
+    ledControl.flashColors(TEAM_COLORS[TEAM]);
+    return CHECKING;
   }
   stopPolling();
-  return checking;
+  return CHECKING;
 }
 
 const checkNFL = () => {
@@ -42,23 +51,19 @@ const checkNFL = () => {
     let score = undefined;
     for (let i = 0; i < parsedBody['gms'].length; i++ ) {
       const game = parsedBody['gms'][i];
-      if (game['h'] === team) {
+      if (game['h'] === TEAM) {
         score = game['hs'];
       }
-      if (game['v'] === team) {
+      if (game['v'] === TEAM) {
         score = game['vs'];
       }
     }
-    if (score > oldScore) {
-      ledControl.flashColors({
-        red: 63,
-        green: 54,
-        blue: 168
-      })
+    if (score > OLD_SCORE) {
+      ledControl.flashColors(TEAM_COLORS[TEAM])
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('nfl post received');
     }
-    oldScore = score;
+    OLD_SCORE = score;
   });
 }
 
