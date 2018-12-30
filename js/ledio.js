@@ -15,6 +15,7 @@ const setColor = (red, green, blue, brightness=1) => {
 
 const flashColors = async (mainColors) => {
   const {oldRed, oldGreen, oldBlue } = getValues();
+  await timeout(100);
   const { red, green, blue } = mainColors;
   LedController.setColors(red,green,blue);
   await timeout(100);
