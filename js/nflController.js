@@ -6,6 +6,8 @@ let checking = false;
 let handler = undefined;
 let oldScore = undefined;
 
+let team = 'CLE';
+
 function startPolling() {
   handler = setInterval(() => {
     try{
@@ -40,10 +42,10 @@ const checkNFL = () => {
     let score = undefined;
     for (let i = 0; i < parsedBody['gms'].length; i++ ) {
       const game = parsedBody['gms'][i];
-      if (game['h'] === 'NYG') {
+      if (game['h'] === team) {
         score = game['hs'];
       }
-      if (game['v'] === 'NYG') {
+      if (game['v'] === team) {
         score = game['vs'];
       }
     }
